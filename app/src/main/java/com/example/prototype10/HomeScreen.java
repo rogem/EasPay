@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,8 +28,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     private NavigationView nav_view;
 
     private TextView nav_email, nav_fname, nav_lname;
-    private DatabaseReference userRef;
-    private DatabaseReference userfRef;
+    private DatabaseReference userRef, userReff;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,17 +40,18 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        nav_view = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
         nav_email = nav_view.getHeaderView(0).findViewById(R.id.nav_user_email);
         nav_fname = nav_view.getHeaderView(0).findViewById(R.id.nav_user_fname);
         nav_lname = nav_view.getHeaderView(0).findViewById(R.id.nav_user_lname);
         userRef = FirebaseDatabase.getInstance().getReference().child("StudentSignUpConnectFirebase").child(
-        FirebaseAuth.getInstance().getCurrentUser().getUid()
+                FirebaseAuth.getInstance().getCurrentUser().getUid()
         );
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -72,10 +71,10 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
             }
         });
-        userfRef = FirebaseDatabase.getInstance().getReference().child("FacultySignUpConnectFirebase").child(
+        userReff = FirebaseDatabase.getInstance().getReference().child("FacultySignUpConnectFirebase").child(
                 FirebaseAuth.getInstance().getCurrentUser().getUid()
         );
-        userfRef.addValueEventListener(new ValueEventListener() {
+        userReff.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
@@ -93,7 +92,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
             }
         });
-
     }
 
     @Override
