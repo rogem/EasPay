@@ -29,6 +29,8 @@ public class EditInfo extends AppCompatActivity {
      FirebaseUser user;
      DatabaseReference referenceStudent,referenceFaculty;
 
+    String firstname,lastname,gender,age,employeenumber,email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +59,12 @@ public class EditInfo extends AppCompatActivity {
 
 
                 if (userProfile != null ){
-                    String firstname = userProfile.FirstName;
-                    String lastname = userProfile.LastName;
-                    String gender = userProfile.Gender;
-                    String age = userProfile.Age;
-                    String employeenumber = userProfile.EmployeeNumber;
-                    String email = userProfile.Email;
+                     firstname = userProfile.FirstName;
+                     lastname = userProfile.LastName;
+                     gender = userProfile.Gender;
+                     age = userProfile.Age;
+                     employeenumber = userProfile.EmployeeNumber;
+                     email = userProfile.Email;
 
 
                     etfirstname.setText(firstname);
@@ -124,8 +126,33 @@ public class EditInfo extends AppCompatActivity {
 
     public void btnsv(View view) {
 
-        Toast.makeText(this, "Data Clicked", Toast.LENGTH_LONG).show();
+        if(isFirstName() || isLastName()){
+            Toast.makeText(this, "Data Edited", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, HomeScreen.class);
+            startActivity(intent);
+        }else {
+            Toast.makeText(this, "Data is te same and can not be edited", Toast.LENGTH_LONG).show();
+        }
+    }
 
+    private boolean isFirstName() {
+        if (!firstname.equals(etfirstname.getEditableText().toString())){
+            referenceStudent.child(firstname).child("FirstName").setValue(etfirstname.getEditableText().toString());
+            firstname = etfirstname.getText().toString();
+            return true;
+        }else {
+            return  false;
+        }
+    }
+
+    private boolean isLastName() {
+        if (!lastname.equals(etlastname.getEditableText().toString())){
+            referenceStudent.child(lastname).child("LastName").setValue(etlastname.getEditableText().toString());
+            lastname = etlastname.getText().toString();
+            return true;
+        }else {
+            return  false;
+        }
     }
 
 
