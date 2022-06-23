@@ -108,9 +108,6 @@ public class FacultySignUp extends AppCompatActivity {
         String Email =email.getText().toString().trim();
         String Password =password.getText().toString().trim();
         String Balance =balance.getText().toString().trim();
-        if(Balance.isEmpty()){
-            return;
-        }
         if(FirstName.isEmpty()){
             Fname.setError("FirstName is required");
             Fname.requestFocus();
@@ -166,7 +163,7 @@ public class FacultySignUp extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-                                StudentSignUpConnectFirebase facultytuser = new StudentSignUpConnectFirebase(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password);
+                                FacultySignUpConnectFirebase facultytuser = new FacultySignUpConnectFirebase(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance);
                                 FirebaseDatabase.getInstance().getReference("FacultySignUpConnectFirebase")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .setValue(facultytuser).addOnCompleteListener(new OnCompleteListener<Void>() {
