@@ -27,7 +27,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     FirebaseAuth mAuth;
     private NavigationView nav_view;
 
-    private TextView nav_email, nav_fname, nav_lname;
+    private TextView nav_email, nav_fname, nav_lname,nav_balance;
     private DatabaseReference userRef, userReff;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +46,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-
+        nav_balance = findViewById(R.id.nav_Balance);
         nav_email = nav_view.getHeaderView(0).findViewById(R.id.nav_user_email);
         nav_fname = nav_view.getHeaderView(0).findViewById(R.id.nav_user_fname);
         nav_lname = nav_view.getHeaderView(0).findViewById(R.id.nav_user_lname);
+
         userRef = FirebaseDatabase.getInstance().getReference().child("StudentSignUpConnectFirebase").child(
                 FirebaseAuth.getInstance().getCurrentUser().getUid()
         );
@@ -63,6 +64,8 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                     nav_fname.setText(fname);
                     String lname = snapshot.child("LastName").getValue().toString();
                     nav_lname.setText(lname);
+                    String balance = snapshot.child("Balance").getValue().toString();
+                    nav_balance.setText(balance);
                 }
             }
 
@@ -84,6 +87,8 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                     nav_fname.setText(fname);
                     String lname = snapshot.child("LastName").getValue().toString();
                     nav_lname.setText(lname);
+                    String balance = snapshot.child("Balance").getValue().toString();
+                    nav_balance.setText(balance);
                 }
             }
 
