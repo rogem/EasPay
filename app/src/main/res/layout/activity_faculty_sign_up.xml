@@ -184,6 +184,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="18dp"
             android:background="@null"
+            android:visibility="gone"
             android:text="0"
             android:textAlignment="center" />
     </LinearLayout>
