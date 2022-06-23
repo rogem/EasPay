@@ -130,6 +130,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btnsv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#800000"
