@@ -6,12 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +25,7 @@ public class EditInfo extends AppCompatActivity {
 
      EditText etfirstname,etlastname,etgender,etage,etemployeenumber,etemail;
      String userID;
-
+     Button btnsv;
      FirebaseUser user;
      DatabaseReference referenceStudent,referenceFaculty;
 
@@ -40,7 +43,7 @@ public class EditInfo extends AppCompatActivity {
         etage = (EditText) findViewById(R.id.ETAge);
         etemployeenumber=(EditText) findViewById(R.id.ETEmployeeNumber);
         etemail =(EditText) findViewById(R.id.ETEmail);
-
+        btnsv = findViewById(R.id.btnsv);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         referenceStudent = FirebaseDatabase.getInstance().getReference("StudentSignUpConnectFirebase");
@@ -120,6 +123,10 @@ public class EditInfo extends AppCompatActivity {
     }
 
     public void btnsv(View view) {
-        Toast.makeText(this, "Save Clicked", Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(this, "Data Clicked", Toast.LENGTH_LONG).show();
+
     }
+
+
 }
