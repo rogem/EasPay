@@ -171,7 +171,15 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:onClick="signup"/>
-
+        <EditText
+            android:id="@+id/Balance"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
+            android:background="@null"
+            android:text="0"
+            android:textAlignment="center" />
     </LinearLayout>
 
 </ScrollView>

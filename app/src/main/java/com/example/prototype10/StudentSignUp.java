@@ -38,7 +38,7 @@ import com.google.firebase.storage.UploadTask;
 public class StudentSignUp extends AppCompatActivity {
     FirebaseAuth mAuth;
 
-    EditText Fname,Lname,gender,age,emplyeenum,ConNumber,email,password;
+    EditText Fname,Lname,gender,age,emplyeenum,ConNumber,email,password,balance;
     CheckBox TermANDCondition;
     private TextView button;
 
@@ -70,7 +70,7 @@ public class StudentSignUp extends AppCompatActivity {
         ConNumber =(EditText) findViewById(R.id.EditTextContactNumber);
         email =(EditText) findViewById(R.id.EditTexEmail);
         password =(EditText) findViewById(R.id.EditTexPassword);
-
+        balance =(EditText) findViewById(R.id.Balance);
         TermANDCondition = (CheckBox) findViewById(R.id.checkboxTermAndCondition);
 
         uploadimage =(ImageView) findViewById(R.id.FirebaseImage);
@@ -110,7 +110,10 @@ public class StudentSignUp extends AppCompatActivity {
         String ContactNumber =ConNumber.getText().toString().trim();
         String Email =email.getText().toString().trim();
         String Password =password.getText().toString().trim();
-
+        String Balance =balance.getText().toString().trim();
+        if(Balance.isEmpty()){
+            return;
+        }
         if(FirstName.isEmpty()){
             Fname.setError("FirstName is required");
             Fname.requestFocus();
@@ -167,7 +170,7 @@ public class StudentSignUp extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if(task.isSuccessful()){
-                                StudentSignUpConnectFirebase studentuser = new StudentSignUpConnectFirebase(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password);
+                                StudentSignUpConnectFirebase studentuser = new StudentSignUpConnectFirebase(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance);
                                 FirebaseDatabase.getInstance().getReference("StudentSignUpConnectFirebase")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .setValue(studentuser).addOnCompleteListener(new OnCompleteListener<Void>() {
