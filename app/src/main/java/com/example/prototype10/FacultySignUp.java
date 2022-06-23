@@ -108,6 +108,9 @@ public class FacultySignUp extends AppCompatActivity {
         String Email =email.getText().toString().trim();
         String Password =password.getText().toString().trim();
         String Balance =balance.getText().toString().trim();
+        if(Balance.isEmpty()){
+            return;
+        }
         if(FirstName.isEmpty()){
             Fname.setError("FirstName is required");
             Fname.requestFocus();
