@@ -116,6 +116,18 @@
             android:background="@drawable/border"/>
 
         <EditText
+            android:id="@+id/ETContactNumber"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="18dp"
+            android:hint="Contact Number"
+            android:visibility="gone"
+            android:inputType="number"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:background="@drawable/border"/>
+
+        <EditText
             android:id="@+id/ETEmail"
             android:layout_width="match_parent"
             android:layout_height="35dp"
@@ -125,6 +137,30 @@
             android:layout_gravity="center"
             android:textAlignment="center"
             android:background="@drawable/border"/>
+
+
+        <EditText
+            android:id="@+id/ETPassword"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="18dp"
+            android:hint="Password"
+            android:visibility="gone"
+            android:inputType="textPassword"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:background="@drawable/border"/>
+
+        <EditText
+            android:id="@+id/ETBalance"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
+            android:background="@null"
+            android:visibility="gone"
+            android:text="0"
+            android:textAlignment="center" />
 
 
     </LinearLayout>

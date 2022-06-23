@@ -27,11 +27,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class EditInfo extends AppCompatActivity {
 
-     EditText etfirstname,etlastname,etgender,etage,etemployeenumber,etemail;
-     String userID;
-     Button btnsv;
-     FirebaseUser user;
-     DatabaseReference referenceStudent,referenceFaculty;
+     EditText etfirstname,etlastname,etgender,etage,etemployeenumber,etcontactnumber,etemail,etpassword,etbalance;
+//     String userID;
+//     Button btnsv;
+//     FirebaseUser user;
+//     DatabaseReference referenceStudent,referenceFaculty;
 
     String FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance;
 
@@ -50,7 +50,11 @@ public class EditInfo extends AppCompatActivity {
         etgender = (EditText) findViewById(R.id.ETGender);
         etage = (EditText) findViewById(R.id.ETAge);
         etemployeenumber=(EditText) findViewById(R.id.ETEmployeeNumber);
+        etcontactnumber =(EditText) findViewById(R.id.ETContactNumber);
         etemail =(EditText) findViewById(R.id.ETEmail);
+        etpassword =(EditText) findViewById(R.id.ETPassword);
+        etbalance =(EditText) findViewById(R.id.ETBalance);
+
 
 
         authProfile = FirebaseAuth.getInstance();
@@ -162,7 +166,10 @@ public class EditInfo extends AppCompatActivity {
             Gender = etgender.getText().toString();
             Age = etage.getText().toString();
             EmployeeNumber = etemployeenumber.getText().toString();
+            ContactNumber = etcontactnumber.getText().toString();
             Email = etemail.getText().toString();
+            Password = etpassword.getText().toString();
+            Balance = etbalance.getText().toString();
 
             StudentSignUpConnectFirebase writeUserDetails = new StudentSignUpConnectFirebase(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance);
 
@@ -208,12 +215,15 @@ public class EditInfo extends AppCompatActivity {
                 StudentSignUpConnectFirebase readUserDetails = snapshot.getValue(StudentSignUpConnectFirebase.class);
 
                 if (readUserDetails != null ){
-                     FirstName = readUserDetails.FirstName;
-                     LastName = readUserDetails.LastName;
-                     Gender = readUserDetails.Gender;
-                     Age = readUserDetails.Age;
-                     EmployeeNumber = readUserDetails.EmployeeNumber;
-                     Email = readUserDetails.Email;
+                    FirstName = readUserDetails.FirstName;
+                    LastName = readUserDetails.LastName;
+                    Gender = readUserDetails.Gender;
+                    Age = readUserDetails.Age;
+                    EmployeeNumber = readUserDetails.EmployeeNumber;
+                    ContactNumber = readUserDetails.ContactNumber;
+                    Email = readUserDetails.Email;
+                    Password = readUserDetails.Password;
+                    Balance = readUserDetails.Balance;
 
 
                     etfirstname.setText(FirstName);
@@ -221,7 +231,10 @@ public class EditInfo extends AppCompatActivity {
                     etgender.setText(Gender);
                     etage.setText(Age);
                     etemployeenumber.setText(EmployeeNumber);
+                    etcontactnumber.setText(ContactNumber);
                     etemail.setText(Email);
+                    etpassword.setText(Password);
+                    etbalance.setText(Balance);
 
                 }
             }
