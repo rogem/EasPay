@@ -37,9 +37,9 @@ import com.google.firebase.storage.UploadTask;
 public class FacultySignUp extends AppCompatActivity {
     FirebaseAuth mAuth;
 
-    EditText Fname,Lname,gender,age,emplyeenum,ConNumber,email,password;
+    EditText Fname,Lname,gender,age,emplyeenum,ConNumber,email,password,balance;
     CheckBox TermANDCondition;
-    private TextView button,balance;
+    private TextView button;
     ImageView uploadimage;
 
     DatabaseReference root = FirebaseDatabase.getInstance().getReference("Image");
@@ -69,7 +69,7 @@ public class FacultySignUp extends AppCompatActivity {
         ConNumber =(EditText) findViewById(R.id.EdtTxtFacultyContactNumber);
         email =(EditText) findViewById(R.id.EdtTxFacultyEmail);
         password =(EditText) findViewById(R.id.EdtTxFacultyPassword);
-        balance =findViewById(R.id.Balance);
+        balance =(EditText) findViewById(R.id.Balance);
 
         TermANDCondition = (CheckBox) findViewById(R.id.CheckBoxFacultyTermAndCondition);
 
@@ -108,6 +108,9 @@ public class FacultySignUp extends AppCompatActivity {
         String Email =email.getText().toString().trim();
         String Password =password.getText().toString().trim();
         String Balance =balance.getText().toString().trim();
+        if(Balance.isEmpty()){
+            return;
+        }
         if(FirstName.isEmpty()){
             Fname.setError("FirstName is required");
             Fname.requestFocus();
