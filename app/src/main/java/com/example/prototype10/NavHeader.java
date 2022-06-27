@@ -34,14 +34,14 @@ public class NavHeader extends AppCompatActivity {
         useremail = (TextView) findViewById(R.id.nav_user_email);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        referenceStudent = FirebaseDatabase.getInstance().getReference("StudentSignUpConnectFirebase");
-        referenceFaculty = FirebaseDatabase.getInstance().getReference("FacultySignUpConnectFirebase");
+        referenceStudent = FirebaseDatabase.getInstance().getReference("User");
+//        referenceFaculty = FirebaseDatabase.getInstance().getReference("FacultySignUpConnectFirebase");
         userID = user.getUid();
 
         referenceStudent.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                StudentSignUpConnectFirebase userProfile =snapshot.getValue(StudentSignUpConnectFirebase.class);
+                User userProfile =snapshot.getValue(User.class);
 
 
                 if (userProfile != null ){
@@ -62,28 +62,28 @@ public class NavHeader extends AppCompatActivity {
             }
         });
 
-        referenceFaculty.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                FacultySignUpConnectFirebase userProfile =snapshot.getValue(FacultySignUpConnectFirebase.class);
-
-                if (userProfile != null ){
-                    String firstname = userProfile.FirstName;
-                    String lastname = userProfile.LastName;
-                    String email = userProfile.Email;
-
-                    userfirstname.setText(firstname);
-                    userlastname.setText(lastname);
-                    useremail.setText(email);
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(NavHeader.this,"Something Wrong Happen", Toast.LENGTH_LONG).show();
-            }
-        });
+//        referenceFaculty.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                FacultySignUpConnectFirebase userProfile =snapshot.getValue(FacultySignUpConnectFirebase.class);
+//
+//                if (userProfile != null ){
+//                    String firstname = userProfile.FirstName;
+//                    String lastname = userProfile.LastName;
+//                    String email = userProfile.Email;
+//
+//                    userfirstname.setText(firstname);
+//                    userlastname.setText(lastname);
+//                    useremail.setText(email);
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(NavHeader.this,"Something Wrong Happen", Toast.LENGTH_LONG).show();
+//            }
+//        });
     }
 
 }

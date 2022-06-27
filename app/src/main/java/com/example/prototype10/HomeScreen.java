@@ -29,6 +29,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
     private TextView nav_email, nav_fname, nav_lname,nav_balance;
     private DatabaseReference userRef, userReff;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,12 +52,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         nav_fname = nav_view.getHeaderView(0).findViewById(R.id.nav_user_fname);
         nav_lname = nav_view.getHeaderView(0).findViewById(R.id.nav_user_lname);
 
-        userRef = FirebaseDatabase.getInstance().getReference().child("StudentSignUpConnectFirebase").child(
-                FirebaseAuth.getInstance().getCurrentUser().getUid()
-        );
+        userRef = FirebaseDatabase.getInstance().getReference().child("User");
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String USER = snapshot.getValue().toString();
                 if(snapshot.exists()){
                     String email = snapshot.child("Email").getValue().toString();
                     nav_email.setText(email);
@@ -74,29 +74,29 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
             }
         });
-        userReff = FirebaseDatabase.getInstance().getReference().child("FacultySignUpConnectFirebase").child(
-                FirebaseAuth.getInstance().getCurrentUser().getUid()
-        );
-        userReff.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    String email = snapshot.child("Email").getValue().toString();
-                    nav_email.setText(email);
-                    String fname = snapshot.child("FirstName").getValue().toString();
-                    nav_fname.setText(fname);
-                    String lname = snapshot.child("LastName").getValue().toString();
-                    nav_lname.setText(lname);
-                    String balance = snapshot.child("Balance").getValue().toString();
-                    nav_balance.setText(balance);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+//        userReff = FirebaseDatabase.getInstance().getReference().child("User").child(
+//                FirebaseAuth.getInstance().getCurrentUser().getUid()
+//        );
+//        userReff.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if(snapshot.exists()){
+//                    String email = snapshot.child("Email").getValue().toString();
+//                    nav_email.setText(email);
+//                    String fname = snapshot.child("FirstName").getValue().toString();
+//                    nav_fname.setText(fname);
+//                    String lname = snapshot.child("LastName").getValue().toString();
+//                    nav_lname.setText(lname);
+//                    String balance = snapshot.child("Balance").getValue().toString();
+//                    nav_balance.setText(balance);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
     }
 
     @Override

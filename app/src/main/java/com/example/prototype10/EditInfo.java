@@ -27,13 +27,13 @@ import com.google.firebase.database.ValueEventListener;
 
 public class EditInfo extends AppCompatActivity {
 
-     EditText etfirstname,etlastname,etgender,etage,etemployeenumber,etcontactnumber,etemail,etpassword,etbalance;
+     EditText etfirstname,etlastname,etgender,etage,etemployeenumber,etcontactnumber,etemail,etpassword,etbalance,etuserstatus;
 //     String userID;
 //     Button btnsv;
 //     FirebaseUser user;
 //     DatabaseReference referenceStudent,referenceFaculty;
 
-    String FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance;
+    String FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus;
 
     FirebaseAuth authProfile;
 
@@ -54,8 +54,7 @@ public class EditInfo extends AppCompatActivity {
         etemail =(EditText) findViewById(R.id.ETEmail);
         etpassword =(EditText) findViewById(R.id.ETPassword);
         etbalance =(EditText) findViewById(R.id.ETBalance);
-
-
+        etuserstatus=(EditText) findViewById(R.id.ETUserStatus);
 
         authProfile = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = authProfile.getCurrentUser();
@@ -170,10 +169,12 @@ public class EditInfo extends AppCompatActivity {
             Email = etemail.getText().toString();
             Password = etpassword.getText().toString();
             Balance = etbalance.getText().toString();
+            AUserStatus = etuserstatus.getText().toString();
 
-            StudentSignUpConnectFirebase writeUserDetails = new StudentSignUpConnectFirebase(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance);
 
-            DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("StudentSignUpConnectFirebase");
+            User writeUserDetails = new User(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus);
+
+            DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("User");
 
             String userID = firebaseUser.getUid();
 
@@ -207,12 +208,12 @@ public class EditInfo extends AppCompatActivity {
     private void showProfile(@NonNull FirebaseUser firebaseUser) {
         String userIDofRegistered = firebaseUser.getUid();
 
-        DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("StudentSignUpConnectFirebase");
+        DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("User");
 
         referenceProfile.child(userIDofRegistered).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                StudentSignUpConnectFirebase readUserDetails = snapshot.getValue(StudentSignUpConnectFirebase.class);
+                User readUserDetails = snapshot.getValue(User.class);
 
                 if (readUserDetails != null ){
                     FirstName = readUserDetails.FirstName;
@@ -224,6 +225,7 @@ public class EditInfo extends AppCompatActivity {
                     Email = readUserDetails.Email;
                     Password = readUserDetails.Password;
                     Balance = readUserDetails.Balance;
+                    AUserStatus = readUserDetails.AUserStatus;
 
 
                     etfirstname.setText(FirstName);
@@ -235,6 +237,7 @@ public class EditInfo extends AppCompatActivity {
                     etemail.setText(Email);
                     etpassword.setText(Password);
                     etbalance.setText(Balance);
+                    etuserstatus.setText(AUserStatus);
 
                 }
             }

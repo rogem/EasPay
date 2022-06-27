@@ -74,7 +74,7 @@ public class LogIn extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    Toast.makeText(LogIn.this,"Student User has been Login successfully",Toast.LENGTH_LONG).show();
+                    Toast.makeText(LogIn.this,"User has been Login successfully",Toast.LENGTH_LONG).show();
                     startActivity(new Intent(LogIn.this,HomeScreen.class));
                 }else {
                     Toast.makeText(LogIn.this,"Failed to login! Please check your credentials",Toast.LENGTH_LONG).show();

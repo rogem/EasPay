@@ -7,7 +7,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Prototype10" >
+        android:theme="@style/Theme.Prototype10">
         <activity
             android:name=".Points"
             android:exported="false" />
@@ -58,7 +58,7 @@
             android:exported="false" />
         <activity
             android:name=".LogIn"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

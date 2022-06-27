@@ -38,7 +38,7 @@ import com.google.firebase.storage.UploadTask;
 public class StudentSignUp extends AppCompatActivity {
     FirebaseAuth mAuth;
 
-    EditText Fname,Lname,gender,age,emplyeenum,ConNumber,email,password,balance;
+    EditText Fname,Lname,gender,age,emplyeenum,ConNumber,email,password,balance,userstatus;
     CheckBox TermANDCondition;
     private TextView button;
 
@@ -71,6 +71,8 @@ public class StudentSignUp extends AppCompatActivity {
         email =(EditText) findViewById(R.id.EditTexEmail);
         password =(EditText) findViewById(R.id.EditTexPassword);
         balance =(EditText) findViewById(R.id.Balance);
+        userstatus=(EditText) findViewById(R.id.UserStatus);
+
         TermANDCondition = (CheckBox) findViewById(R.id.checkboxTermAndCondition);
 
         uploadimage =(ImageView) findViewById(R.id.FirebaseImage);
@@ -111,6 +113,8 @@ public class StudentSignUp extends AppCompatActivity {
         String Email =email.getText().toString().trim();
         String Password =password.getText().toString().trim();
         String Balance =balance.getText().toString().trim();
+        String AUserStatus =userstatus.getText().toString().trim();
+
         if(Balance.isEmpty()){
             return;
         }
@@ -170,9 +174,9 @@ public class StudentSignUp extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if(task.isSuccessful()){
-                                StudentSignUpConnectFirebase studentuser = new StudentSignUpConnectFirebase(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance);
-                                FirebaseDatabase.getInstance().getReference("StudentSignUpConnectFirebase")
-                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                User studentuser = new User(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus);
+                                FirebaseDatabase.getInstance().getReference("User")
+                                        .child(ContactNumber)
                                         .setValue(studentuser).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
