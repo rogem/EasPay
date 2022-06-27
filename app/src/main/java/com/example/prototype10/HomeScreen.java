@@ -52,11 +52,13 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         nav_fname = nav_view.getHeaderView(0).findViewById(R.id.nav_user_fname);
         nav_lname = nav_view.getHeaderView(0).findViewById(R.id.nav_user_lname);
 
-        userRef = FirebaseDatabase.getInstance().getReference().child("User");
+        userRef = FirebaseDatabase.getInstance().getReference().child("User").child(
+                FirebaseAuth.getInstance().getCurrentUser().getUid()
+        );
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String USER = snapshot.getValue().toString();
+
                 if(snapshot.exists()){
                     String email = snapshot.child("Email").getValue().toString();
                     nav_email.setText(email);
