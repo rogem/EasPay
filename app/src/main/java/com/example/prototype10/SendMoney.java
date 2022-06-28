@@ -25,7 +25,7 @@ public class SendMoney extends AppCompatActivity {
     String FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus;
 
     EditText mobilenumber,amount;
-    String balance;
+    String balance,phonenumber;
 
     FirebaseAuth auth;
     DatabaseReference referenceProfile;
@@ -71,15 +71,19 @@ public class SendMoney extends AppCompatActivity {
 
     private void sendMoney(FirebaseUser firebaseUser) {
 
+
         String Amount = amount.getText().toString();
-        Integer availbalance = Integer.parseInt(balance);
         Integer cash = Integer.parseInt(Amount);
+        Integer availbalance = Integer.parseInt(balance);
         Integer total = availbalance-cash;
 
         referenceProfile.child(userIDofRegistered).child("Balance").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //balance of the user
                 referenceProfile.child(userIDofRegistered).child("Balance").setValue(total);
+                //send money to another user
+                referenceProfile.child(phonenumber).child("Balance").setValue(cash);
             }
 
             @Override
@@ -108,6 +112,7 @@ public class SendMoney extends AppCompatActivity {
                     Balance = readUserDetails.Balance;
                     AUserStatus = readUserDetails.AUserStatus;
 
+                    phonenumber = ContactNumber;
                     balance = Balance;
 
 //                    mobilenumber.setText(ContactNumber);

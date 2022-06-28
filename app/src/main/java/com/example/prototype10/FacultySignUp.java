@@ -171,7 +171,7 @@ public class FacultySignUp extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 User facultytuser = new User(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus);
                                 FirebaseDatabase.getInstance().getReference("User")
-                                        .child(ContactNumber)
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .setValue(facultytuser).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
