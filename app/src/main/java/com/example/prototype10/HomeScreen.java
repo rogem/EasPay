@@ -81,29 +81,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
             }
         });
-//        userReff = FirebaseDatabase.getInstance().getReference().child("User").child(
-//                FirebaseAuth.getInstance().getCurrentUser().getUid()
-//        );
-//        userReff.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.exists()){
-//                    String email = snapshot.child("Email").getValue().toString();
-//                    nav_email.setText(email);
-//                    String fname = snapshot.child("FirstName").getValue().toString();
-//                    nav_fname.setText(fname);
-//                    String lname = snapshot.child("LastName").getValue().toString();
-//                    nav_lname.setText(lname);
-//                    String balance = snapshot.child("Balance").getValue().toString();
-//                    nav_balance.setText(balance);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
     }
 
     @Override

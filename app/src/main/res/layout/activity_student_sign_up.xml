@@ -110,6 +110,7 @@
             android:layout_height="35dp"
             android:layout_marginTop="18dp"
             android:hint="Contact Number"
+            android:maxLength="11"
             android:inputType="number"
             android:layout_gravity="center"
             android:textAlignment="center"
