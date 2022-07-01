@@ -9,6 +9,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prototype10">
         <activity
+            android:name=".CashOut"
+            android:exported="false" />
+        <activity
             android:name=".CashIn"
             android:exported="false" />
         <activity

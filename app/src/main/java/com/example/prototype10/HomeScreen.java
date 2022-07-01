@@ -103,7 +103,16 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         Intent intent = new Intent(this, Pay.class);
         startActivity(intent);
     }
-
+    public void btnCashIn(View view) {
+        Toast.makeText(this, "CashIn Clicked", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, CashIn.class);
+        startActivity(intent);
+    }
+    public void btnCashOut(View view) {
+        Toast.makeText(this, "CashOut Clicked", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, CashOut.class);
+        startActivity(intent);
+    }
     public void btntrnsctn(View view) {
         Toast.makeText(this, "Transaction Clicked", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, TransactionHistory.class);
