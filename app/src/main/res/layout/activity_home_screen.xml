@@ -27,7 +27,9 @@
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="677dp" />
+            android:layout_height="677dp"
+
+            />
 
     </LinearLayout>
     <LinearLayout
@@ -61,6 +63,57 @@
             android:textSize="30dp"
             android:id="@+id/nav_Balance"
             android:textStyle="italic" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:onClick="btnCashIn"
+                    android:src="@drawable/cashin" />
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:onClick="btnCashOut"
+                    android:src="@drawable/cashout" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="btnsend"
+                    android:text="Cash In"
+                    android:textAlignment="center"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="btnpay"
+                    android:text="Cash Out"
+                    android:textAlignment="center"
+                    android:textSize="20dp" />
+            </TableRow>
+        </TableLayout>
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -173,5 +226,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
+
         app:menu="@menu/drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

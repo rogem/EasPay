@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class EditInfo extends AppCompatActivity {
 
-     EditText etfirstname,etlastname,etgender,etage,etemployeenumber,etcontactnumber,etemail,etpassword,etbalance,etuserstatus;
+    EditText etfirstname,etlastname,etgender,etage,etemployeenumber,etcontactnumber,etemail,etpassword,etbalance,etuserstatus;
 //     String userID;
 //     Button btnsv;
 //     FirebaseUser user;
@@ -151,7 +151,7 @@ public class EditInfo extends AppCompatActivity {
             etgender.setError("Gender is required");
             etgender.requestFocus();
         }else if(TextUtils.isEmpty(Age)){
-           etage.setError("Age is required");
+            etage.setError("Age is required");
             etage.requestFocus();
         }else if(TextUtils.isEmpty(EmployeeNumber)){
             etemployeenumber.setError("Employee Number is required");

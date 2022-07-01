@@ -111,6 +111,140 @@
             android:text="Continue" />
 <!--        android:onClick="sndcontinue"-->
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/ETFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="18dp"
+                android:hint="First Name"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:background="@drawable/border"/>
+
+            <EditText
+                android:id="@+id/ETLastName"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="18dp"
+                android:hint="Last Name"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:background="@drawable/border"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/ETGender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="15dp"
+                    android:hint="Gender"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:background="@drawable/border"/>
+                <EditText
+                    android:id="@+id/ETAge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="15dp"
+                    android:inputType="number"
+                    android:hint="Age"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:background="@drawable/border"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/ETEmployeeNumber"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="18dp"
+                android:hint="Employee Number"
+                android:visibility="gone"
+                android:inputType="number"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:background="@drawable/border"/>
+
+            <EditText
+                android:id="@+id/ETContactNumber"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="18dp"
+                android:hint="Contact Number"
+                android:visibility="gone"
+                android:inputType="number"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:background="@drawable/border"/>
+
+            <EditText
+                android:id="@+id/ETEmail"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="18dp"
+                android:hint="Email"
+                android:visibility="gone"
+                android:inputType="number"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:background="@drawable/border"/>
+
+
+            <EditText
+                android:id="@+id/ETPassword"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="18dp"
+                android:hint="Password"
+                android:visibility="gone"
+                android:inputType="textPassword"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:background="@drawable/border"/>
+
+            <EditText
+                android:id="@+id/ETBalance"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="18dp"
+                android:background="@null"
+
+                android:text=""
+                android:textAlignment="center" />
+            <EditText
+                android:id="@+id/ETUserStatus"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="18dp"
+                android:background="@null"
+                android:visibility="gone"
+                android:text="0"
+                android:textAlignment="center" />
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
 </LinearLayout>
