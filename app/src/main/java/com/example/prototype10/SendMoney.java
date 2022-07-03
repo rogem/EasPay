@@ -179,7 +179,7 @@ public class SendMoney extends AppCompatActivity {
                             for (DataSnapshot ds: snapshot.getChildren()){
                                 key = ds.getKey();
 
-                                CustomDialog customDialog = new CustomDialog("Please choose the sender numberPayment Successful");
+                                CustomDialog customDialog = new CustomDialog("Payment Successful");
                                 customDialog.show(getSupportFragmentManager(),"example");
 
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("History").child(key);
