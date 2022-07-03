@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 public class CustomDialog extends AppCompatDialogFragment {
 
     String message;
-    public CustomDialog(String message){
+    public CustomDialog(String message) {
         this.message = message;
     }
 

@@ -1,12 +1,12 @@
 package com.example.prototype10;
 
 public class HistoryModel {
-    String senderName,receiverName, amount;
+    String senderName, receiverName, amount;
 
-    public HistoryModel(){
+    public HistoryModel() {
     }
 
-    public HistoryModel(String senderName, String receiverName, String amount) {
+    public HistoryModel(String amount, String receiverName, String senderName) {
         this.senderName = senderName;
         this.receiverName = receiverName;
         this.amount = amount;

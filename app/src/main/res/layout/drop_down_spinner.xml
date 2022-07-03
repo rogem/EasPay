@@ -2,12 +2,12 @@
 <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fontFamily="sans-serif-smallcaps"
     android:padding="16dp"
-    android:text="09999999999"
+    android:text="shiva"
     android:textAlignment="viewStart"
     android:textColor="#000000"
-    android:maxLength="11"
-    android:textSize="20dp"
+    android:textSize="22dp"
     android:textStyle="bold|italic"
     android:background="?attr/selectableItemBackground">
 
