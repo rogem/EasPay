@@ -115,6 +115,9 @@ public class StudentSignUp extends AppCompatActivity {
         String Balance =balance.getText().toString().trim();
         String AUserStatus =userstatus.getText().toString().trim();
 
+        Bundle bundle = new Bundle();
+        bundle.putString("Email", Email);
+
         if(Balance.isEmpty()){
             return;
         }
@@ -188,7 +191,8 @@ public class StudentSignUp extends AppCompatActivity {
                                                 }
                                                 if (task.isSuccessful()){
                                                     Toast.makeText(StudentSignUp.this,"Student User has been registered successfully",Toast.LENGTH_LONG).show();
-                                                    startActivity(new Intent(StudentSignUp.this,HomeScreen.class));
+                                                    Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
+                                                    intent.putExtras(bundle);
                                                 }else {
                                                     Toast.makeText(StudentSignUp.this,"Failed to register! try again!",Toast.LENGTH_LONG).show();
                                                 }

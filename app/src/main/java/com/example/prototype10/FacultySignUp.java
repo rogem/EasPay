@@ -111,6 +111,9 @@ public class FacultySignUp extends AppCompatActivity {
         String Balance =balance.getText().toString().trim();
         String AUserStatus =userstatus.getText().toString().trim();
 
+        Bundle bundle = new Bundle();
+        bundle.putString("Email", Email);
+
         if(Balance.isEmpty()){
             return;
         }
@@ -171,7 +174,8 @@ public class FacultySignUp extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 User facultytuser = new User(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus);
                                 FirebaseDatabase.getInstance().getReference("User")
-                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .child(FirstName)
+//                                FirebaseAuth.getInstance().getCurrentUser().getUid()
                                         .setValue(facultytuser).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
@@ -184,7 +188,10 @@ public class FacultySignUp extends AppCompatActivity {
 
                                                 if (task.isSuccessful()){
                                                     Toast.makeText(FacultySignUp.this,"Student User has been registered successfully",Toast.LENGTH_LONG).show();
-                                                    startActivity(new Intent(FacultySignUp.this,HomeScreen.class));
+                                                    Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
+                                                    intent.putExtras(bundle);
+                                                    startActivity(intent);
+//                                                    startActivity(new Intent(FacultySignUp.this,HomeScreen.class));
                                                 }else {
                                                     Toast.makeText(FacultySignUp.this,"Failed to register! try again!",Toast.LENGTH_LONG).show();
                                                 }

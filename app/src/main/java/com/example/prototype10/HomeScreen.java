@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
@@ -32,6 +33,12 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
     private TextView nav_email, nav_fname, nav_lname,nav_balance;
     private DatabaseReference userRef, userReff;
+
+    String email,fname,lname,balance;
+    String useremail,key,FirstName;
+    Bundle userbundle,bundle;
+
+    Intent setintent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,28 +58,49 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        bundle = getIntent().getExtras();
+        useremail = bundle.getString("Email");
+
         nav_balance = findViewById(R.id.nav_Balance);
         nav_email = nav_view.getHeaderView(0).findViewById(R.id.nav_user_email);
         nav_fname = nav_view.getHeaderView(0).findViewById(R.id.nav_user_fname);
         nav_lname = nav_view.getHeaderView(0).findViewById(R.id.nav_user_lname);
 
-
-        userRef = FirebaseDatabase.getInstance().getReference().child("User").child(
-                FirebaseAuth.getInstance().getCurrentUser().getUid()
-        );
-        userRef.addValueEventListener(new ValueEventListener() {
+        userReff = FirebaseDatabase.getInstance().getReference();
+        Query query = userReff.child("User").orderByChild("Email").equalTo(useremail);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds: snapshot.getChildren()){
+                    key = ds.getKey();
+                    userRef = FirebaseDatabase.getInstance().getReference().child("User").child(
+                            key
+                    );
+                    userRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if(snapshot.exists()){
-                    String email = snapshot.child("Email").getValue().toString();
-                    nav_email.setText(email);
-                    String fname = snapshot.child("FirstName").getValue().toString();
-                    nav_fname.setText(fname);
-                    String lname = snapshot.child("LastName").getValue().toString();
-                    nav_lname.setText(lname);
-                    String balance = snapshot.child("Balance").getValue().toString();
-                    nav_balance.setText(balance);
+                            if(snapshot.exists()){
+
+                                email = snapshot.child("Email").getValue().toString();
+                                fname = snapshot.child("FirstName").getValue().toString();
+                                lname = snapshot.child("LastName").getValue().toString();
+                                balance = snapshot.child("Balance").getValue().toString();
+
+                                FirstName = fname;
+                                nav_email.setText(email);
+                                nav_fname.setText(fname);
+                                nav_lname.setText(lname);
+                                nav_balance.setText(balance);
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
             }
 
@@ -81,6 +109,14 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
             }
         });
+
+        userbundle = new Bundle();
+        userbundle.putString("FirstName", FirstName);
+        userbundle.putString("Email", useremail);
+
+        setintent = getIntent();
+        setintent.getStringExtra("FirstName");
+
     }
 
     @Override
@@ -94,23 +130,30 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
     public void btnsend(View view) {
         Toast.makeText(this, "Send Clicked", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, SendMoney.class);
+        Intent intent = new Intent(getApplicationContext(), SendMoney.class);
+        intent.putExtra("FirstName", FirstName);
+        intent.putExtras(userbundle);
         startActivity(intent);
     }
 
     public void btnpay(View view) {
         Toast.makeText(this, "Pay Clicked", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, Pay.class);
+        Intent intent = new Intent(getApplicationContext(), Pay.class);
+        intent.putExtras(userbundle);
         startActivity(intent);
     }
     public void btnCashIn(View view) {
         Toast.makeText(this, "CashIn Clicked", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, CashIn.class);
+        Intent intent = new Intent(getApplicationContext(),CashIn.class);
+        intent.putExtras(userbundle);
+        startActivity(intent);
+//        Intent intent = new Intent(this, CashIn.class);
         startActivity(intent);
     }
     public void btnCashOut(View view) {
         Toast.makeText(this, "CashOut Clicked", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, CashOut.class);
+        Intent intent = new Intent(getApplicationContext(),CashOut.class);
+        intent.putExtras(userbundle);
         startActivity(intent);
     }
     public void btntrnsctn(View view) {
@@ -130,7 +173,8 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_editprofile:
-                Intent intentep=new Intent(HomeScreen.this,EditInfo.class);
+                Intent intentep = new Intent(getApplicationContext(),EditInfo.class);
+                intentep.putExtras(userbundle);
                 startActivity(intentep);
                 break;
             case R.id.nav_print:

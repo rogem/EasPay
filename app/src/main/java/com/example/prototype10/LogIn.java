@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -14,6 +15,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LogIn extends AppCompatActivity {
 
@@ -49,6 +55,9 @@ public class LogIn extends AppCompatActivity {
         String email = Email.getText().toString().trim();
         String password = Password.getText().toString().trim();
 
+        Bundle bundle = new Bundle();
+        bundle.putString("Email", email);
+
         if (email.isEmpty()){
             Email.setError("Email is required!");
             Email.requestFocus();
@@ -74,8 +83,14 @@ public class LogIn extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
+
+
+
                     Toast.makeText(LogIn.this,"User has been Login successfully",Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(LogIn.this,HomeScreen.class));
+                    Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+//                    startActivity(new Intent(LogIn.this,HomeScreen.class));
                 }else {
                     Toast.makeText(LogIn.this,"Failed to login! Please check your credentials",Toast.LENGTH_LONG).show();
                 }
