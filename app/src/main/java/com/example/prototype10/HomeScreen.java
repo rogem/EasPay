@@ -182,7 +182,8 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                         new PrintFragment()).commit();
                 break;
             case R.id.nav_settings:
-                Intent intents=new Intent(HomeScreen.this,Setting.class);
+                Intent intents = new Intent(getApplicationContext(),Setting.class);
+                intents.putExtras(userbundle);
                 startActivity(intents);
                 break;
             case R.id.nav_signout:

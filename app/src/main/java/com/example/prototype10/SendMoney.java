@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
@@ -48,8 +49,10 @@ public class SendMoney extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseAuth authProfile;
 
+    DatabaseReference reference;
+    String userID, fname,key;
     Bundle bundle,userbundle;
-    String userID,fname;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +72,8 @@ public class SendMoney extends AppCompatActivity {
         userbundle.putString("Email", userID);
 
 
-
-       senderUserId = firebaseUser.getUid();
-       senderReference =  FirebaseDatabase.getInstance().getReference("User").child(senderUserId);
+//       senderUserId = firebaseUser.getUid();
+       senderReference =  FirebaseDatabase.getInstance().getReference("User");
        receiverReference = FirebaseDatabase.getInstance().getReference().child("User");
        enterBalance = findViewById(R.id.EditAmount);
        sendBtn = findViewById(R.id.btnSendMoney);
@@ -93,14 +95,32 @@ public class SendMoney extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        senderReference.addValueEventListener(new ValueEventListener() {
+
+        reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference.child("User").orderByChild("Email").equalTo(userID);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    senderBalance = Long.parseLong(snapshot.child("Balance").getValue().toString());
-                    senderName = snapshot.child("FirstName").getValue().toString();
-                }
+                for (DataSnapshot ds: snapshot.getChildren()){
+                    key = ds.getKey();
 
+                    senderReference.child(key).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()){
+                                senderBalance = Long.parseLong(snapshot.child("Balance").getValue().toString());
+                                senderName = snapshot.child("FirstName").getValue().toString();
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                }
             }
 
             @Override
@@ -108,6 +128,8 @@ public class SendMoney extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     @Override
@@ -149,35 +171,75 @@ public class SendMoney extends AppCompatActivity {
                     return;
                 }
                 else if (receiverName == senderName){
-                    CustomDialog customDialog = new CustomDialog("Payment Successful");
-                    customDialog.show(getSupportFragmentManager(),"example");
+                    reference = FirebaseDatabase.getInstance().getReference();
+                    Query query = reference.child("User").orderByChild("Email").equalTo(userID);
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot ds: snapshot.getChildren()){
+                                key = ds.getKey();
 
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(senderUserId).child("History");
-                    HistoryModel historyModel =  new HistoryModel(balance,senderName,receiverName);
-                    reference.push().setValue(historyModel);
+                                CustomDialog customDialog = new CustomDialog("Payment Successful");
+                                customDialog.show(getSupportFragmentManager(),"example");
+
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("History").child(key);
+                                HistoryModel historyModel =  new HistoryModel(senderName,receiverName,balance);
+                                reference.push().setValue(historyModel);
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                 }
                 else if (Long.parseLong(balance)>senderBalance){
                     CustomDialog customDialog = new CustomDialog("Insufficient Balance");
                     customDialog.show(getSupportFragmentManager(),"example");
                 }
                 else if (senderName != receiverName){
-                    senderReference.child("Balance").setValue(senderBalance-(Long.parseLong(balance)));
-                    DatabaseReference localReceiverReference = receiverReference.child(receiverUserId);
-                    localReceiverReference.child("Balance").setValue(receiverBalance+(Long.parseLong(balance)))
-                            .addOnCompleteListener(SendMoney.this, new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    enterBalance.getText().clear();
-                                    InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(SendMoney.INPUT_METHOD_SERVICE);
-                                    inputMethodManager.hideSoftInputFromWindow(enterBalance.getWindowToken(),0);
-                                    CustomDialog customDialog = new CustomDialog("Payment Successful");
-                                    customDialog.show(getSupportFragmentManager(),"example");
+                    reference = FirebaseDatabase.getInstance().getReference();
+                    Query query = reference.child("User").orderByChild("Email").equalTo(userID);
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot ds: snapshot.getChildren()){
+                                key = ds.getKey();
 
-                                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("History");
-                                    HistoryModel historyModel =  new HistoryModel(balance,senderName,receiverName);
-                                    reference.push().setValue(historyModel);
-                                }
-                            });
+                                senderReference.child(key).child("Balance").setValue(senderBalance-(Long.parseLong(balance)));
+                                DatabaseReference localReceiverReference = receiverReference.child(receiverUserId);
+                                localReceiverReference.child("Balance").setValue(receiverBalance+(Long.parseLong(balance)))
+                                        .addOnCompleteListener(SendMoney.this, new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                enterBalance.getText().clear();
+                                                InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(SendMoney.INPUT_METHOD_SERVICE);
+                                                inputMethodManager.hideSoftInputFromWindow(enterBalance.getWindowToken(),0);
+                                                CustomDialog customDialog = new CustomDialog("Payment Successful");
+                                                customDialog.show(getSupportFragmentManager(),"example");
+
+                                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("History").child(key);
+                                                HistoryModel historyModel =  new HistoryModel(senderName,receiverName,balance);
+                                                reference.push().setValue(historyModel);
+
+                                                Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
+                                                intent.putExtras(userbundle);
+                                                startActivity(intent);
+                                            }
+                                        });
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                 }
             }
         });
