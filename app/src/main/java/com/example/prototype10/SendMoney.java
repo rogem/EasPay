@@ -170,7 +170,7 @@ public class SendMoney extends AppCompatActivity {
                     enterBalance.setError("Minimun amount ₱1");
                     return;
                 }
-                else if (receiverName == senderName){
+                else if (receiverName != senderName){
                     reference = FirebaseDatabase.getInstance().getReference();
                     Query query = reference.child("User").orderByChild("Email").equalTo(userID);
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -179,7 +179,7 @@ public class SendMoney extends AppCompatActivity {
                             for (DataSnapshot ds: snapshot.getChildren()){
                                 key = ds.getKey();
 
-                                CustomDialog customDialog = new CustomDialog("Payment Successful");
+                                CustomDialog customDialog = new CustomDialog("Please choose the sender number Payment Successful");
                                 customDialog.show(getSupportFragmentManager(),"example");
 
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("History").child(key);
