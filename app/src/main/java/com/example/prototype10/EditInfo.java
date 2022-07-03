@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 public class EditInfo extends AppCompatActivity {
@@ -37,13 +41,14 @@ public class EditInfo extends AppCompatActivity {
 
     FirebaseAuth authProfile;
 
+    DatabaseReference reference;
+    String userID, fname,key;
+    Bundle bundle,userbundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_info);
-
-
 
         etfirstname =(EditText) findViewById(R.id.ETFirstName);
         etlastname =(EditText) findViewById(R.id.ETLastName);
@@ -55,6 +60,14 @@ public class EditInfo extends AppCompatActivity {
         etpassword =(EditText) findViewById(R.id.ETPassword);
         etbalance =(EditText) findViewById(R.id.ETBalance);
         etuserstatus=(EditText) findViewById(R.id.ETUserStatus);
+
+        bundle = getIntent().getExtras();
+        userID = bundle.getString("Email");
+        fname = bundle.getString("FirstName");
+
+        userbundle = new Bundle();
+        userbundle.putString("FirstName", fname);
+        userbundle.putString("Email", userID);
 
         authProfile = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = authProfile.getCurrentUser();
@@ -68,75 +81,6 @@ public class EditInfo extends AppCompatActivity {
                 updateProfile(firebaseUser);
             }
         });
-
-//        user = FirebaseAuth.getInstance().getCurrentUser();
-//        referenceStudent = FirebaseDatabase.getInstance().getReference("StudentSignUpConnectFirebase");
-//        referenceFaculty = FirebaseDatabase.getInstance().getReference("FacultySignUpConnectFirebase");
-//        userID = user.getUid();
-//
-//        referenceStudent.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                StudentSignUpConnectFirebase userProfile = snapshot.getValue(StudentSignUpConnectFirebase.class);
-//
-//
-//                if (userProfile != null ){
-//                     firstname = userProfile.FirstName;
-//                     lastname = userProfile.LastName;
-//                     gender = userProfile.Gender;
-//                     age = userProfile.Age;
-//                     employeenumber = userProfile.EmployeeNumber;
-//                     email = userProfile.Email;
-//
-//
-//                    etfirstname.setText(firstname);
-//                    etlastname.setText(lastname);
-//                    etgender.setText(gender);
-//                    etage.setText(age);
-//                    etemployeenumber.setText(employeenumber);
-//                    etemail.setText(email);
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(EditInfo.this,"Something Wrong Happen", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//
-//        referenceFaculty.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                FacultySignUpConnectFirebase userProfile = snapshot.getValue(FacultySignUpConnectFirebase.class);
-//
-//
-//                if (userProfile != null ){
-//                    String firstname = userProfile.FirstName;
-//                    String lastname = userProfile.LastName;
-//                    String gender = userProfile.Gender;
-//                    String age = userProfile.Age;
-//                    String employeenumber = userProfile.EmployeeNumber;
-//                    String email = userProfile.Email;
-//
-//
-//                    etfirstname.setText(firstname);
-//                    etlastname.setText(lastname);
-//                    etgender.setText(gender);
-//                    etage.setText(age);
-//                    etemployeenumber.setText(employeenumber);
-//                    etemail.setText(email);
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(EditInfo.this,"Something Wrong Happen", Toast.LENGTH_LONG).show();
-//            }
-//        });
-
 
     }
 
@@ -171,120 +115,127 @@ public class EditInfo extends AppCompatActivity {
             Balance = etbalance.getText().toString();
             AUserStatus = etuserstatus.getText().toString();
 
-
-            User writeUserDetails = new User(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus);
-
-            DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("User");
-
-            String userID = firebaseUser.getUid();
-
-            referenceProfile.child(userID).setValue(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+            reference = FirebaseDatabase.getInstance().getReference();
+            Query query = reference.child("User").orderByChild("Email").equalTo(userID);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot ds: snapshot.getChildren()){
+                        key = ds.getKey();
 
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().
-                                setDisplayName(Email).build();
-                        firebaseUser.updateProfile(profileUpdates);
+                        User writeUserDetails = new User(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus);
 
-                        Toast.makeText(EditInfo.this,"Edit Successful", Toast.LENGTH_LONG).show();
+                        DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("User");
 
-                        Intent intent = new Intent(EditInfo.this,HomeScreen.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        finish();
-                    }else {
-                        try {
-                            throw task.getException();
-                        }catch (Exception e){
-                            Toast.makeText(EditInfo.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                        String userID = key;
+
+                        referenceProfile.child(userID).setValue(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().
+                                            setDisplayName(Email).build();
+                                    firebaseUser.updateProfile(profileUpdates);
+
+                                    Toast.makeText(EditInfo.this,"Edit Successful", Toast.LENGTH_LONG).show();
+
+                                    Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
+                                    intent.putExtras(userbundle);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }else {
+                                    try {
+                                        throw task.getException();
+                                    }catch (Exception e){
+                                        Toast.makeText(EditInfo.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            }
+                        });
+
                     }
                 }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
             });
+
+
         }
     }
 
     private void showProfile(@NonNull FirebaseUser firebaseUser) {
-        String userIDofRegistered = firebaseUser.getUid();
 
-        DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("User");
-
-        referenceProfile.child(userIDofRegistered).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference.child("User").orderByChild("Email").equalTo(userID);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User readUserDetails = snapshot.getValue(User.class);
+                for (DataSnapshot ds: snapshot.getChildren()){
+                    key = ds.getKey();
 
-                if (readUserDetails != null ){
-                    FirstName = readUserDetails.FirstName;
-                    LastName = readUserDetails.LastName;
-                    Gender = readUserDetails.Gender;
-                    Age = readUserDetails.Age;
-                    EmployeeNumber = readUserDetails.EmployeeNumber;
-                    ContactNumber = readUserDetails.ContactNumber;
-                    Email = readUserDetails.Email;
-                    Password = readUserDetails.Password;
-                    Balance = readUserDetails.Balance;
-                    AUserStatus = readUserDetails.AUserStatus;
+                    String userIDofRegistered = key;
+
+                    DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("User");
+
+                    referenceProfile.child(userIDofRegistered).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
 
 
-                    etfirstname.setText(FirstName);
-                    etlastname.setText(LastName);
-                    etgender.setText(Gender);
-                    etage.setText(Age);
-                    etemployeenumber.setText(EmployeeNumber);
-                    etcontactnumber.setText(ContactNumber);
-                    etemail.setText(Email);
-                    etpassword.setText(Password);
-                    etbalance.setText(Balance);
-                    etuserstatus.setText(AUserStatus);
+                            if (snapshot.exists()){
+
+                                FirstName = snapshot.child("FirstName").getValue().toString();
+                                LastName = snapshot.child("LastName").getValue().toString();
+                                Gender = snapshot.child("Gender").getValue().toString();
+                                Age = snapshot.child("Age").getValue().toString();
+                                EmployeeNumber = snapshot.child("EmployeeNumber").getValue().toString();
+                                ContactNumber = snapshot.child("ContactNumber").getValue().toString();
+                                Email = snapshot.child("Email").getValue().toString();
+                                Password = snapshot.child("Password").getValue().toString();
+                                Balance = snapshot.child("Balance").getValue().toString();
+                                AUserStatus = snapshot.child("AUserStatus").getValue().toString();
+
+
+                                etfirstname.setText(FirstName);
+                                etlastname.setText(LastName);
+                                etgender.setText(Gender);
+                                etage.setText(Age);
+                                etemployeenumber.setText(EmployeeNumber);
+                                etcontactnumber.setText(ContactNumber);
+                                etemail.setText(Email);
+                                etpassword.setText(Password);
+                                etbalance.setText(Balance);
+                                etuserstatus.setText(AUserStatus);
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(EditInfo.this,"Something Wrong Happen", Toast.LENGTH_LONG).show();
+                        }
+                    });
 
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EditInfo.this,"Something Wrong Happen", Toast.LENGTH_LONG).show();
+
             }
         });
+
     }
 
     public void btnedtbck(View view) {
         Toast.makeText(this, "Back Clicked", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, HomeScreen.class);
+        Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
+        intent.putExtras(userbundle);
         startActivity(intent);
     }
-
-//    public void btnsv(View view) {
-
-//        if(isFirstName() || isLastName()){
-//            Toast.makeText(this, "Data Edited", Toast.LENGTH_LONG).show();
-//            Intent intent = new Intent(this, HomeScreen.class);
-//            startActivity(intent);
-//        }else {
-//            Toast.makeText(this, "Data is te same and can not be edited", Toast.LENGTH_LONG).show();
-//        }
-//    }
-
-//    private boolean isFirstName() {
-//        if (!firstname.equals(etfirstname.getEditableText().toString())){
-//            referenceStudent.child(firstname).child("FirstName").setValue(etfirstname.getEditableText().toString());
-//            firstname = etfirstname.getText().toString();
-//            return true;
-//        }else {
-//            return  false;
-//        }
-//    }
-//
-//    private boolean isLastName() {
-//        if (!lastname.equals(etlastname.getEditableText().toString())){
-//            referenceStudent.child(lastname).child("LastName").setValue(etlastname.getEditableText().toString());
-//            lastname = etlastname.getText().toString();
-//            return true;
-//        }else {
-//            return  false;
-//        }
-//    }
-
-
 }

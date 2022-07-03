@@ -17,11 +17,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 public class CashOut extends AppCompatActivity {
 
     EditText mobilenumber,amount,message;
+    DatabaseReference reference;
+    String userID, fname,key;
+    Bundle bundle,userbundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,55 +36,78 @@ public class CashOut extends AppCompatActivity {
         amount = findViewById(R.id.EditAmount);
         message = findViewById(R.id.EditTextMessage);
 
-        Button buttonUpdateProfile = findViewById(R.id.btnSendMoney);
-        buttonUpdateProfile.setOnClickListener(new View.OnClickListener() {
+        bundle = getIntent().getExtras();
+        userID = bundle.getString("Email");
+        fname = bundle.getString("FirstName");
+
+        userbundle = new Bundle();
+        userbundle.putString("FirstName", fname);
+        userbundle.putString("Email", userID);
+
+        reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference.child("User").orderByChild("Email").equalTo(userID);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds: snapshot.getChildren()){
+                    key = ds.getKey();
 
-                String getmobilenumber = mobilenumber.getText().toString();
-                String money = amount.getText().toString();
-                Integer moneyToAdd = Integer.parseInt(money);
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
-                        .child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Balance");
+                    Button buttonUpdateProfile = findViewById(R.id.btnSendMoney);
+                    buttonUpdateProfile.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                ref.runTransaction(new Transaction.Handler() {
-                    @NonNull
-                    @Override
-                    public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                        Object currentMoney = currentData.getValue();
-                        int totalMoney = 0;
-                        if (currentMoney == null){
-                            totalMoney = moneyToAdd;
-                        }else {
-                            totalMoney = Integer.parseInt(String.valueOf(currentMoney)) - moneyToAdd;
 
-                            Intent intent = new Intent(CashOut.this,HomeScreen.class);
-                            startActivity(intent);
-                            finish();
+                            String money = amount.getText().toString();
+                            Integer moneyToAdd = Integer.parseInt(money);
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
+                                    .child("User").child(key).child("Balance");
+
+                            ref.runTransaction(new Transaction.Handler() {
+                                @NonNull
+                                @Override
+                                public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                                    Object currentMoney = currentData.getValue();
+                                    int totalMoney = 0;
+                                    if (currentMoney == null){
+                                        totalMoney = moneyToAdd;
+                                    }else {
+                                        totalMoney = Integer.parseInt(String.valueOf(currentMoney)) - moneyToAdd;
+
+                                        Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
+                                        intent.putExtras(userbundle);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    currentData.setValue(totalMoney);
+                                    return Transaction.success(currentData);
+                                }
+
+                                @Override
+                                public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+
+                                }
+                            });
                         }
-                        currentData.setValue(totalMoney);
-                        return Transaction.success(currentData);
-                    }
+                    });
 
-                    @Override
-                    public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                }
+            }
 
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
+
+
     }
 
     public void btnbchme(View view) {
         Toast.makeText(this, "Back Clicked", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, HomeScreen.class);
+        Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
+        intent.putExtras(userbundle);
         startActivity(intent);
     }
-
-//    public void sndcontinue(View view) {
-//        Toast.makeText(this, "Continue Clicked", Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(this, SendMoney2.class);
-//        startActivity(intent);
-//    }
 
 }
