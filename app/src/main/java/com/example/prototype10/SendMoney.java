@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 public class SendMoney extends AppCompatActivity {
 
-    String senderUserId,receiverUserId,senderName,receiverName;
+    String senderUserId,receiverUserId,senderName,receiverNumber;
     long senderBalance,receiverBalance;
     DatabaseReference mReference = FirebaseDatabase.getInstance().getReference().child("User");
     DatabaseReference senderReference,receiverReference;
@@ -44,8 +44,9 @@ public class SendMoney extends AppCompatActivity {
     ArrayList<String> spinnerUserList;
     ArrayList<String> getSpinnerUserIdList;
 
-    EditText enterBalance;
+    EditText enterBalance,enterMessage;
     Button sendBtn;
+    String getMeassage;
 
     FirebaseUser firebaseUser;
     FirebaseAuth authProfile;
@@ -77,6 +78,7 @@ public class SendMoney extends AppCompatActivity {
        senderReference =  FirebaseDatabase.getInstance().getReference("User");
        receiverReference = FirebaseDatabase.getInstance().getReference().child("User");
        enterBalance = findViewById(R.id.EditAmount);
+       enterMessage = findViewById(R.id.EditTextMessage);
        sendBtn = findViewById(R.id.btnSendMoney);
 
        enterBalance.setText(fname);
@@ -141,7 +143,7 @@ public class SendMoney extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 receiverUserId = getSpinnerUserIdList.get(position);
-                receiverName = parent.getSelectedItem().toString();
+                receiverNumber = parent.getSelectedItem().toString();
                 receiverReference.child(receiverUserId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -167,12 +169,13 @@ public class SendMoney extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final  String balance = enterBalance.getText().toString().trim();
+                getMeassage = enterMessage.getText().toString().trim();
 
                 if (TextUtils.isEmpty(balance)|| Long.valueOf(balance) == 0){
                     enterBalance.setError("Minimun amount ₱1");
                     return;
                 }
-                else if (receiverName != senderName){
+                else if (receiverNumber == senderName){
                     reference = FirebaseDatabase.getInstance().getReference();
                     Query query = reference.child("User").orderByChild("Email").equalTo(userID);
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -185,9 +188,12 @@ public class SendMoney extends AppCompatActivity {
                                 customDialog.show(getSupportFragmentManager(),"example");
 
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("History").child(key);
-                                HistoryModel historyModel =  new HistoryModel(senderName,receiverName,balance);
+                                HistoryModel historyModel =  new HistoryModel(senderName,receiverNumber,balance,getMeassage);
                                 reference.push().setValue(historyModel);
 
+                                Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
+                                intent.putExtras(userbundle);
+                                startActivity(intent);
                             }
                         }
 
@@ -202,7 +208,7 @@ public class SendMoney extends AppCompatActivity {
                     CustomDialog customDialog = new CustomDialog("Insufficient Balance");
                     customDialog.show(getSupportFragmentManager(),"example");
                 }
-                else if (senderName != receiverName){
+                else if (senderName != receiverNumber){
                     reference = FirebaseDatabase.getInstance().getReference();
                     Query query = reference.child("User").orderByChild("Email").equalTo(userID);
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -224,7 +230,7 @@ public class SendMoney extends AppCompatActivity {
                                                 customDialog.show(getSupportFragmentManager(),"example");
 
                                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("History").child(key);
-                                                HistoryModel historyModel =  new HistoryModel(senderName,receiverName,balance);
+                                                HistoryModel historyModel =  new HistoryModel(senderName,receiverNumber,balance,getMeassage);
                                                 reference.push().setValue(historyModel);
 
                                                 Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
