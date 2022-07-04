@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -89,6 +90,7 @@ public class SendMoney extends AppCompatActivity {
                R.layout.custom_spinner_me, spinnerUserList);
        arrayAdapter.setDropDownViewResource(R.layout.drop_down_spinner);
        userSpinner.setAdapter(arrayAdapter);
+
 
     }
 
