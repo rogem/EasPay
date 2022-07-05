@@ -38,8 +38,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     String useremail,key,FirstName;
     Bundle userbundle,bundle;
 
-    Intent setintent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,9 +112,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         userbundle.putString("FirstName", FirstName);
         userbundle.putString("Email", useremail);
 
-        setintent = getIntent();
-        setintent.getStringExtra("FirstName");
-
     }
 
     @Override
@@ -131,7 +126,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     public void btnsend(View view) {
         Toast.makeText(this, "Send Clicked", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(), SendMoney.class);
-        intent.putExtra("FirstName", FirstName);
         intent.putExtras(userbundle);
         startActivity(intent);
     }
@@ -158,14 +152,16 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     }
     public void btntrnsctn(View view) {
         Toast.makeText(this, "Transaction Clicked", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, TransactionHistory.class);
+        Intent intent = new Intent(getApplicationContext(),TransactionHistory.class);
+        intent.putExtras(userbundle);
         startActivity(intent);
     }
 
 
     public void btnpoints(View view) {
         Toast.makeText(this, "Points Clicked", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, Points.class);
+        Intent intent = new Intent(getApplicationContext(),Points.class);
+        intent.putExtras(userbundle);
         startActivity(intent);
     }
 
