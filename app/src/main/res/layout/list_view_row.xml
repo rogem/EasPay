@@ -11,6 +11,55 @@
     android:layout_marginRight="10dp"
     android:background="#F67E83">
 
+    <TextView
+        android:id="@+id/txtviewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="17dp"
+        android:text="Sender Name:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#4D4D4E"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@id/txtviewReceiverNumebr"
+        app:layout_constraintEnd_toStartOf="@id/paidNames"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/txtviewReceiverNumebr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="3dp"
+        android:text="Receiver Number:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#4D4D4E"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@id/txtviewMessage"
+        app:layout_constraintEnd_toStartOf="@id/paidReceiverNumber"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtviewName" />
+
+    <TextView
+        android:id="@+id/txtviewMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Message: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#4D4D4E"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/paidMessage"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtviewReceiverNumebr" />
 
     <TextView
         android:id="@+id/textView"
@@ -25,7 +74,7 @@
         android:textSize="18sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/paidNames"
-        app:layout_constraintEnd_toStartOf="@+id/paidAmount"
+        app:layout_constraintEnd_toStartOf="@+id/paidNames"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -55,13 +104,13 @@
         android:layout_marginEnd="16dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="#4D4D4E"
+        android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/paidReceiverNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/txtviewName" />
 
     <TextView
         android:id="@+id/paidReceiverNumber"
@@ -70,7 +119,7 @@
         android:layout_marginEnd="16dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="#4D4D4E"
+        android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintTop_toBottomOf="@id/paidNames"
@@ -83,15 +132,16 @@
         android:id="@+id/paidMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="#4D4D4E"
+        android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/paidReceiverNumber"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/paidReceiverNumber"
+        app:layout_constraintStart_toStartOf="@id/paidReceiverNumber"
         app:layout_constraintTop_toBottomOf="@+id/paidReceiverNumber" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
