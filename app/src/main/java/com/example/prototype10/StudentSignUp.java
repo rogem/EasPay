@@ -194,6 +194,7 @@ public class StudentSignUp extends AppCompatActivity {
                                                     Toast.makeText(StudentSignUp.this,"Student User has been registered successfully",Toast.LENGTH_LONG).show();
                                                     Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
                                                     intent.putExtras(bundle);
+                                                    startActivity(intent);
                                                 }else {
                                                     Toast.makeText(StudentSignUp.this,"Failed to register! try again!",Toast.LENGTH_LONG).show();
                                                 }
