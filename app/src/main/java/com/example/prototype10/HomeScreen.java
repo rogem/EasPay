@@ -31,10 +31,10 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     FirebaseAuth mAuth;
     private NavigationView nav_view;
 
-    private TextView nav_email, nav_fname, nav_lname,nav_balance;
+    private TextView nav_email, nav_fname, nav_lname,nav_balance,nav_points;
     private DatabaseReference userRef, userReff;
 
-    String email,fname,lname,balance;
+    String email,fname,lname,balance,points;
     String useremail,key,FirstName;
     Bundle userbundle,bundle;
 
@@ -58,8 +58,8 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
         bundle = getIntent().getExtras();
         useremail = bundle.getString("Email");
-
         nav_balance = findViewById(R.id.nav_Balance);
+        nav_points = findViewById(R.id.nav_Points);
         nav_email = nav_view.getHeaderView(0).findViewById(R.id.nav_user_email);
         nav_fname = nav_view.getHeaderView(0).findViewById(R.id.nav_user_fname);
         nav_lname = nav_view.getHeaderView(0).findViewById(R.id.nav_user_lname);
@@ -84,12 +84,14 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                                 fname = snapshot.child("FirstName").getValue().toString();
                                 lname = snapshot.child("LastName").getValue().toString();
                                 balance = snapshot.child("Balance").getValue().toString();
-
+                                points = snapshot.child("Points").getValue().toString();
                                 FirstName = fname;
                                 nav_email.setText(email);
                                 nav_fname.setText(fname);
                                 nav_lname.setText(lname);
                                 nav_balance.setText(balance);
+                                nav_points.setText(points);
+
 
                             }
                         }

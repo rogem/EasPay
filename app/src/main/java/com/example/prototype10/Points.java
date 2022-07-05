@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,9 +27,11 @@ public class Points extends AppCompatActivity {
     private DatabaseReference userRef, userReff;
     EditText mobilenumber,amount,message;
     DatabaseReference reference;
-    String userID, fname,key;
+    String userID, fname,key,points;
+    TextView userpoints;
     Bundle bundle,userbundle;
-    private TextView anav_points;
+    FirebaseUser user;
+    DatabaseReference referenceStudent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +43,36 @@ public class Points extends AppCompatActivity {
         bundle = getIntent().getExtras();
         userID = bundle.getString("Email");
         fname = bundle.getString("FirstName");
-        anav_points = findViewById(R.id.nav_Points);
+        points = bundle.getString("Points");
         userbundle = new Bundle();
         userbundle.putString("FirstName", fname);
         userbundle.putString("Email", userID);
+
+        userpoints = (TextView) findViewById(R.id.nav_Points);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        referenceStudent = FirebaseDatabase.getInstance().getReference("User");
+        userID = user.getUid();
+
+        referenceStudent.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User userProfile =snapshot.getValue(User.class);
+
+
+                if (userProfile != null ){
+                    String points = userProfile.Points;
+                    userpoints.setText(points);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Points.this,"Something Wrong Happen", Toast.LENGTH_LONG).show();
+            }
+        });
+
         reference = FirebaseDatabase.getInstance().getReference();
         Query query = reference.child("User").orderByChild("Email").equalTo(userID);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
