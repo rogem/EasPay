@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class SendMoney extends AppCompatActivity {
 
     String senderUserId,receiverUserId,senderName,receiverNumber;
-    long senderBalance,receiverBalance;
+    long senderBalance,receiverBalance,senderPoints;
     DatabaseReference mReference = FirebaseDatabase.getInstance().getReference().child("User");
     DatabaseReference senderReference,receiverReference;
 
@@ -44,7 +44,7 @@ public class SendMoney extends AppCompatActivity {
     ArrayList<String> spinnerUserList;
     ArrayList<String> getSpinnerUserIdList;
 
-    EditText enterBalance,enterMessage;
+    EditText enterBalance,enterMessage,enterPoints;
     Button sendBtn;
     String getMeassage;
 
@@ -78,6 +78,7 @@ public class SendMoney extends AppCompatActivity {
        senderReference =  FirebaseDatabase.getInstance().getReference("User");
        receiverReference = FirebaseDatabase.getInstance().getReference().child("User");
        enterBalance = findViewById(R.id.EditAmount);
+       enterPoints = findViewById(R.id.EditPoints);
        enterMessage = findViewById(R.id.EditTextMessage);
        sendBtn = findViewById(R.id.btnSendMoney);
 
@@ -112,6 +113,7 @@ public class SendMoney extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()){
+                                senderPoints = Long.parseLong(snapshot.child("Points").getValue().toString());
                                 senderBalance = Long.parseLong(snapshot.child("Balance").getValue().toString());
                                 senderName = snapshot.child("FirstName").getValue().toString();
                             }
@@ -168,6 +170,7 @@ public class SendMoney extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final  String points = enterPoints.getText().toString().trim();
                 final  String balance = enterBalance.getText().toString().trim();
                 getMeassage = enterMessage.getText().toString().trim();
 
@@ -218,6 +221,7 @@ public class SendMoney extends AppCompatActivity {
                                 key = ds.getKey();
 
                                 senderReference.child(key).child("Balance").setValue(senderBalance-(Long.parseLong(balance)));
+                                senderReference.child(key).child("Points").setValue(senderPoints+(Long.parseLong(points)));
                                 DatabaseReference localReceiverReference = receiverReference.child(receiverUserId);
                                 localReceiverReference.child("Balance").setValue(receiverBalance+(Long.parseLong(balance)))
                                         .addOnCompleteListener(SendMoney.this, new OnCompleteListener<Void>() {

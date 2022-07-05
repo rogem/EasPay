@@ -31,13 +31,13 @@ import com.google.firebase.database.ValueEventListener;
 
 public class EditInfo extends AppCompatActivity {
 
-    EditText etfirstname,etlastname,etgender,etage,etemployeenumber,etcontactnumber,etemail,etpassword,etbalance,etuserstatus;
+    EditText etfirstname,etlastname,etgender,etage,etemployeenumber,etcontactnumber,etemail,etpassword,etbalance,etpoints,etuserstatus;
 //     String userID;
 //     Button btnsv;
 //     FirebaseUser user;
 //     DatabaseReference referenceStudent,referenceFaculty;
 
-    String FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus;
+    String FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,Points,AUserStatus;
 
     FirebaseAuth authProfile;
 
@@ -60,7 +60,7 @@ public class EditInfo extends AppCompatActivity {
         etpassword =(EditText) findViewById(R.id.ETPassword);
         etbalance =(EditText) findViewById(R.id.ETBalance);
         etuserstatus=(EditText) findViewById(R.id.ETUserStatus);
-
+        etpoints=(EditText) findViewById(R.id.ETPoints);
         bundle = getIntent().getExtras();
         userID = bundle.getString("Email");
         fname = bundle.getString("FirstName");
@@ -113,6 +113,7 @@ public class EditInfo extends AppCompatActivity {
             Email = etemail.getText().toString();
             Password = etpassword.getText().toString();
             Balance = etbalance.getText().toString();
+            Points = etpoints.getText().toString();
             AUserStatus = etuserstatus.getText().toString();
 
             reference = FirebaseDatabase.getInstance().getReference();
@@ -123,7 +124,7 @@ public class EditInfo extends AppCompatActivity {
                     for (DataSnapshot ds: snapshot.getChildren()){
                         key = ds.getKey();
 
-                        User writeUserDetails = new User(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus);
+                        User writeUserDetails = new User(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,Points,AUserStatus);
 
                         DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("User");
 
@@ -198,6 +199,7 @@ public class EditInfo extends AppCompatActivity {
                                 Email = snapshot.child("Email").getValue().toString();
                                 Password = snapshot.child("Password").getValue().toString();
                                 Balance = snapshot.child("Balance").getValue().toString();
+                                Points = snapshot.child("Points").getValue().toString();
                                 AUserStatus = snapshot.child("AUserStatus").getValue().toString();
 
 
@@ -210,6 +212,7 @@ public class EditInfo extends AppCompatActivity {
                                 etemail.setText(Email);
                                 etpassword.setText(Password);
                                 etbalance.setText(Balance);
+                                etpoints.setText(Points);
                                 etuserstatus.setText(AUserStatus);
 
                             }

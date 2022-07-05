@@ -2,12 +2,12 @@ package com.example.prototype10;
 
 public class User {
 
-    public String  FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus;
+    public String  FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus,Points;
 
     public User(){
     }
 
-    public User(String firstName, String lastName, String gender, String age, String employeeNumber, String contactNumber, String email, String password, String balance, String AUserStatus) {
+    public User(String firstName, String lastName, String gender, String age, String employeeNumber, String contactNumber, String email, String password, String balance, String points, String AUserStatus) {
         this.FirstName = firstName;
         this.LastName = lastName;
         this.Gender = gender;
@@ -17,6 +17,7 @@ public class User {
         this.Email = email;
         this.Password = password;
         this.Balance = balance;
+        this.Points = points;
         this.AUserStatus = AUserStatus;
     }
 }

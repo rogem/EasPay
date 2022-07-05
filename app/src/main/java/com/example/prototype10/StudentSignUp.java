@@ -38,7 +38,7 @@ import com.google.firebase.storage.UploadTask;
 public class StudentSignUp extends AppCompatActivity {
     FirebaseAuth mAuth;
 
-    EditText Fname,Lname,gender,age,emplyeenum,ConNumber,email,password,balance,userstatus;
+    EditText Fname,Lname,gender,age,emplyeenum,ConNumber,email,password,balance,userstatus,points;
     CheckBox TermANDCondition;
     private TextView button;
 
@@ -72,7 +72,7 @@ public class StudentSignUp extends AppCompatActivity {
         password =(EditText) findViewById(R.id.EditTexPassword);
         balance =(EditText) findViewById(R.id.Balance);
         userstatus=(EditText) findViewById(R.id.UserStatus);
-
+        points=(EditText) findViewById(R.id.Points);
         TermANDCondition = (CheckBox) findViewById(R.id.checkboxTermAndCondition);
 
         uploadimage =(ImageView) findViewById(R.id.FirebaseImage);
@@ -113,6 +113,7 @@ public class StudentSignUp extends AppCompatActivity {
         String Email =email.getText().toString().trim();
         String Password =password.getText().toString().trim();
         String Balance =balance.getText().toString().trim();
+        String Points =points.getText().toString().trim();
         String AUserStatus =userstatus.getText().toString().trim();
 
         Bundle bundle = new Bundle();
@@ -177,7 +178,7 @@ public class StudentSignUp extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if(task.isSuccessful()){
-                                User studentuser = new User(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,AUserStatus);
+                                User studentuser = new User(FirstName,LastName,Gender,Age,EmployeeNumber,ContactNumber,Email,Password,Balance,Points,AUserStatus);
                                 FirebaseDatabase.getInstance().getReference("User")
                                         .child(FirstName)
 //                                FirebaseAuth.getInstance().getCurrentUser().getUid()
@@ -194,6 +195,7 @@ public class StudentSignUp extends AppCompatActivity {
                                                     Toast.makeText(StudentSignUp.this,"Student User has been registered successfully",Toast.LENGTH_LONG).show();
                                                     Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
                                                     intent.putExtras(bundle);
+                                                    startActivity(intent);
                                                 }else {
                                                     Toast.makeText(StudentSignUp.this,"Failed to register! try again!",Toast.LENGTH_LONG).show();
                                                 }
