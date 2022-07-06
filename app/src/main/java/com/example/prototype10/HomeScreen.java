@@ -34,9 +34,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     private TextView nav_email, nav_fname, nav_lname,nav_balance;
     private DatabaseReference userRef, userReff;
 
-    String email,fname,lname,balance;
+    String email,fname,lname,balance,setbalance;
     String useremail,key,FirstName;
     Bundle userbundle,bundle;
+
+    Double getbalance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +87,14 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                                 lname = snapshot.child("LastName").getValue().toString();
                                 balance = snapshot.child("Balance").getValue().toString();
 
+                                getbalance = Double.parseDouble(balance);
+                                setbalance = String.valueOf(getbalance);
+
                                 FirstName = fname;
                                 nav_email.setText(email);
                                 nav_fname.setText(fname);
                                 nav_lname.setText(lname);
-                                nav_balance.setText(balance);
+                                nav_balance.setText(setbalance);
 
                             }
                         }

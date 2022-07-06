@@ -191,6 +191,12 @@ public class StudentSignUp extends AppCompatActivity {
                                                     Toast.makeText(StudentSignUp.this,"Please select Image",Toast.LENGTH_SHORT).show();
                                                 }
                                                 if (task.isSuccessful()){
+
+                                                    String userpoint = "0";
+                                                    DatabaseReference referencePoints = FirebaseDatabase.getInstance().getReference("Points").child(FirstName);
+                                                    PointsModal pointsModal = new PointsModal(userpoint);
+                                                    referencePoints.setValue(pointsModal);
+
                                                     Toast.makeText(StudentSignUp.this,"Student User has been registered successfully",Toast.LENGTH_LONG).show();
                                                     Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
                                                     intent.putExtras(bundle);

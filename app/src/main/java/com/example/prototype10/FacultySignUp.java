@@ -187,6 +187,15 @@ public class FacultySignUp extends AppCompatActivity {
                                                 }
 
                                                 if (task.isSuccessful()){
+
+//                                                    long points = 0;
+//                                                    points++;
+//                                                    String userpoint = String.valueOf(points);
+                                                    String userpoint = "0";
+                                                    DatabaseReference referencePoints = FirebaseDatabase.getInstance().getReference("Points").child(FirstName);
+                                                    PointsModal pointsModal = new PointsModal(userpoint);
+                                                    referencePoints.setValue(pointsModal);
+
                                                     Toast.makeText(FacultySignUp.this,"Student User has been registered successfully",Toast.LENGTH_LONG).show();
                                                     Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
                                                     intent.putExtras(bundle);

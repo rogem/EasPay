@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -191,6 +192,37 @@ public class SendMoney extends AppCompatActivity {
                                 HistoryModel historyModel =  new HistoryModel(senderName,receiverNumber,balance,getMeassage);
                                 reference.push().setValue(historyModel);
 
+                                String money = "1";
+                                Integer moneyToAdd = Integer.parseInt(money);
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
+                                        .child("Points").child(key).child("userPoints");
+
+                                ref.runTransaction(new Transaction.Handler() {
+                                    @NonNull
+                                    @Override
+                                    public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                                        Object currentMoney = currentData.getValue();
+                                        int totalMoney = 0;
+                                        if (currentMoney == null){
+                                            totalMoney = moneyToAdd;
+                                        }else {
+                                            totalMoney = Integer.parseInt(String.valueOf(currentMoney)) + moneyToAdd;
+
+                                            Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
+                                            intent.putExtras(userbundle);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                        currentData.setValue(totalMoney);
+                                        return Transaction.success(currentData);
+                                    }
+
+                                    @Override
+                                    public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+
+                                    }
+                                });
+
                                 Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
                                 intent.putExtras(userbundle);
                                 startActivity(intent);
@@ -232,6 +264,37 @@ public class SendMoney extends AppCompatActivity {
                                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("History").child(key);
                                                 HistoryModel historyModel =  new HistoryModel(senderName,receiverNumber,balance,getMeassage);
                                                 reference.push().setValue(historyModel);
+
+                                                String money = "1";
+                                                Integer moneyToAdd = Integer.parseInt(money);
+                                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
+                                                        .child("Points").child(key).child("userPoints");
+
+                                                ref.runTransaction(new Transaction.Handler() {
+                                                    @NonNull
+                                                    @Override
+                                                    public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                                                        Object currentMoney = currentData.getValue();
+                                                        int totalMoney = 0;
+                                                        if (currentMoney == null){
+                                                            totalMoney = moneyToAdd;
+                                                        }else {
+                                                            totalMoney = Integer.parseInt(String.valueOf(currentMoney)) + moneyToAdd;
+
+                                                            Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
+                                                            intent.putExtras(userbundle);
+                                                            startActivity(intent);
+                                                            finish();
+                                                        }
+                                                        currentData.setValue(totalMoney);
+                                                        return Transaction.success(currentData);
+                                                    }
+
+                                                    @Override
+                                                    public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+
+                                                    }
+                                                });
 
                                                 Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
                                                 intent.putExtras(userbundle);
