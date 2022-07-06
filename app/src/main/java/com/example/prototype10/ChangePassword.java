@@ -75,26 +75,7 @@ public class ChangePassword extends AppCompatActivity {
             startActivity(intent);
             finish();
         }else {
-
-            reference = FirebaseDatabase.getInstance().getReference();
-            Query query = reference.child("User").orderByChild("Email").equalTo(userID);
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot ds: snapshot.getChildren()){
-                        key = ds.getKey();
-
-                        reAuthenticateUser(firebaseUser);
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
+            reAuthenticateUser(firebaseUser);
         }
     }
 
@@ -173,8 +154,44 @@ public class ChangePassword extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()){
 
+                        reference = FirebaseDatabase.getInstance().getReference();
+                        Query query = reference.child("User").orderByChild("Email").equalTo(userID);
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot ds: snapshot.getChildren()){
+                                    key = ds.getKey();
+
+                                    DatabaseReference update = FirebaseDatabase.getInstance().getReference();
+                                    Query userquery = update.child("User").orderByChild("Password").equalTo(userPwdCurr);
+                                    userquery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for (DataSnapshot change : snapshot.getChildren()){
+                                                change.getRef().child("Password").setValue(userPwdNew);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+
+
                         Toast.makeText(ChangePassword.this,"Password has been change",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(ChangePassword.this,HomeScreen.class);
+                        intent.putExtras(userbundle);
                         startActivity(intent);
                         finish();
                     }else {
